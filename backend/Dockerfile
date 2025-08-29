@@ -2,7 +2,7 @@
 FROM python:3.11.2-slim
  
 # Crie um usuário não-root (se já não existir)
-RUN useradd -m C:\Users\Pichau\Documents\pythonAULA\unigrande>
+RUN useradd -m unigrande
  
 # Set working directory
 WORKDIR /usr/src/app
@@ -10,7 +10,9 @@ WORKDIR /usr/src/app
 # Instale dependências do sistema enquanto é root
 USER root
  
-RUN apt-get update && apt-get install -y netcat-openbsd && apt-get clean && rm -rf /var/lib/apt/lists/*
+RUN apt-get update && \
+    apt-get install -y netcat-openbsd && \
+    apt-get clean && rm -rf /var/lib/apt/lists/*
  
 # Set environment variables
 ENV PYTHONDONTWRITEBYTECODE 1
@@ -34,10 +36,10 @@ COPY ./entrypoint.sh .
 RUN chmod +x /usr/src/app/entrypoint.sh
  
 # Altere o dono do diretório para o novo usuário
-RUN chown -R C:\Users\Pichau\Documents\pythonAULA\unigrande>
+RUN chown -R unigrande:unigrande /usr/src/app
  
 # Defina o usuário no Dockerfile para a execução da aplicação
-USER dutraisra
+USER unigrande
  
-# Run entrypoint.sh
+# Executar o entrypoint.sh
 ENTRYPOINT ["/usr/src/app/entrypoint.sh"]
